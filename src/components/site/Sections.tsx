@@ -161,7 +161,7 @@ export function About() {
       <div className="mx-auto grid max-w-7xl items-center gap-12 md:grid-cols-2">
         <div className="relative">
           <div className="aspect-[4/5] overflow-hidden rounded-[32px]">
-            <img src={aboutImage} alt="Hand finishing glossy black paint with a red microfibre towel" loading="lazy" onError={imgFallback} data-parallax="-8" className="h-[115%] w-full object-cover" />
+            <img src={aboutImage} alt="Mazda 3 rear seats after a DetailsByPat pet hair removal" loading="lazy" onError={imgFallback} data-parallax="-8" className="h-[115%] w-full object-cover" />
           </div>
           <span className="glass absolute bottom-6 left-6 rounded-full px-5 py-3 text-sm font-semibold text-foreground">Union City, CA</span>
           <span className="glass absolute right-6 top-6 rounded-full px-5 py-3 text-sm font-semibold text-foreground">Mobile service</span>

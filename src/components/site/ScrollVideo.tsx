@@ -98,7 +98,7 @@ export function ScrollVideo({ src, poster, stages, intro }: { src: string; poste
   return (
     <section id="home" ref={sec} aria-label="DetailsByPat mobile detailing" className="relative bg-background">
       <div className="relative h-[100svh] overflow-hidden bg-ink">
-        <img src={poster} alt="Car being pressure washed during a detail" onError={imgFallback} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={poster} alt="DetailsByPat detailing video, first frame" onError={imgFallback} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
         {videoOk && (
           <video ref={video} src={src} poster={poster} muted playsInline preload="auto" autoPlay={!scrub} aria-hidden
             onError={() => setVideoOk(false)} className="absolute inset-0 h-full w-full object-cover" />

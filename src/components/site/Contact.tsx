@@ -37,7 +37,7 @@ export function Contact() {
           <p className="mx-auto mt-4 max-w-lg text-lg text-foreground/80">Send a DM on Instagram with your car and what you need. We come to you in Union City, CA.</p>
         </div>
         <div className="mt-12 aspect-[21/9] overflow-hidden rounded-[32px]">
-          <img src={contactImage} alt="Freshly detailed black sedan on a driveway at sunset" loading="lazy" onError={imgFallback} className="h-full w-full object-cover" />
+          <img src={contactImage} alt="Freshly detailed white VW Jetta on a driveway" loading="lazy" onError={imgFallback} className="h-full w-full object-cover" />
         </div>
         <div className="glass relative -mt-16 mx-2 grid gap-10 rounded-[32px] bg-background/80 p-6 md:mx-10 md:grid-cols-[1fr_1.3fr] md:p-10">
           <div>

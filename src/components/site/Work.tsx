@@ -49,10 +49,14 @@ export function Work() {
             {list.map((p, k) => (
               <motion.button layout key={p.id} initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.94 }} transition={{ duration: 0.45 }}
                 onClick={() => open(p.id)} className={cn("group relative overflow-hidden rounded-[28px] text-left", cat === "All" && spans[k])} aria-label={`Open ${p.title}`}>
-                <img src={p.image} alt={p.title} loading="lazy" onError={imgFallback} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                {p.video ? (
+                  <video src={p.video} poster={p.image} muted loop playsInline autoPlay preload="metadata" aria-hidden className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                ) : (
+                  <img src={p.image} alt={p.title} loading="lazy" onError={imgFallback} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                )}
                 <span className="glass absolute inset-x-3 bottom-3 translate-y-2 rounded-2xl px-4 py-3 opacity-90 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                   <strong className="block text-foreground">{p.title}</strong>
-                  <span className="text-sm text-primary">{p.category}{p.gallery.length > 1 && ` · ${p.gallery.length} photos`}</span>
+                  <span className="text-sm text-primary">{p.category}{p.gallery.length > 1 && ` · ${p.gallery.length} items`}</span>
                 </span>
               </motion.button>
             ))}
@@ -71,7 +75,11 @@ export function Work() {
             <motion.figure key={idx} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.35 }}
               drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={(_, i) => { if (i.offset.x < -60) go(1); else if (i.offset.x > 60) go(-1); }}
               onClick={(e) => e.stopPropagation()} className="max-h-full max-w-5xl">
-              <img src={slides[idx].src} alt={`${slides[idx].title}, photo ${slides[idx].n + 1}`} onError={imgFallback} className="max-h-[78vh] w-auto rounded-3xl object-contain" draggable={false} />
+              {slides[idx].src.endsWith(".mp4") ? (
+                <video src={slides[idx].src} controls autoPlay muted loop playsInline className="max-h-[78vh] w-auto rounded-3xl object-contain bg-ink" />
+              ) : (
+                <img src={slides[idx].src} alt={`${slides[idx].title}, photo ${slides[idx].n + 1}`} onError={imgFallback} className="max-h-[78vh] w-auto rounded-3xl object-contain" draggable={false} />
+              )}
               <figcaption className="mt-4 text-center text-on-ink">{slides[idx].title} · <span className="text-primary">{slides[idx].category}</span>{slides[idx].total > 1 && <span className="opacity-70"> · {slides[idx].n + 1}/{slides[idx].total}</span>}</figcaption>
             </motion.figure>
             <button onClick={(e) => { e.stopPropagation(); setIdx(null); }} aria-label="Close" className="glass-dark absolute right-4 top-4 grid size-12 place-items-center rounded-full"><X /></button>

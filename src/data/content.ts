@@ -1,6 +1,5 @@
 // All editable site content lives here.
-// Images: generated placeholders in /public/images and /public/work. Swap in real photos by
-// dropping files at the same paths (or changing the paths below).
+// Images: only real DetailsByPat job photos/videos, all in /public/work.
 import scrollVideoAsset from "@/assets/scroll-video.mp4.asset.json";
 
 export const brand = {
@@ -36,7 +35,7 @@ export const marquee = ["Exterior Detailing", "Interior Detailing", "Paint Corre
 // (e.g. put a file at /public/scroll-video.mp4 and set src: "/scroll-video.mp4").
 export const scrollVideo = {
   src: scrollVideoAsset.url,
-  poster: "/images/scroll-poster.webp",
+  poster: "/work/scroll-poster.webp",
   // Opening screen shown over the first frames of the video.
   intro: {
     line1: "Every Detail.",
@@ -72,35 +71,37 @@ export const serviceLib: Record<string, ServiceItem> = {
 
 // CONFIRM WITH CLIENT: the four main service cards. No prices — DM for a quote.
 export const services = [
-  { id: "exterior", title: "Exterior Detailing", blurb: "A deep, safe clean that leaves paint, glass and wheels spotless.", image: "/images/service-exterior.webp", items: ["wash", "wheels", "trim"] },
-  { id: "interior", title: "Interior Detailing", blurb: "Every seat, seam and vent cleaned so the cabin feels new again.", image: "/images/service-interior.webp", items: ["interior", "seats", "dash"] },
-  { id: "paint", title: "Paint Correction", blurb: "Swirls polished away to bring back a sharp, glossy finish.", image: "/images/service-paint.webp", items: ["correction", "polish", "gloss"] },
-  { id: "protection", title: "Protection", blurb: "Coatings and sealants that keep the shine locked in for longer.", image: "/images/service-protection.webp", items: ["ceramic", "sealant", "maintenance"] },
+  { id: "exterior", title: "Exterior Detailing", blurb: "A deep, safe clean that leaves paint, glass and wheels spotless.", image: "/work/jetta-exterior.webp", items: ["wash", "wheels", "trim"] },
+  { id: "interior", title: "Interior Detailing", blurb: "Every seat, seam and vent cleaned so the cabin feels new again.", image: "/work/jetta-console.webp", items: ["interior", "seats", "dash"] },
+  { id: "paint", title: "Paint Correction", blurb: "Swirls polished away to bring back a sharp, glossy finish.", image: "/work/trx-wheel-after.webp", items: ["correction", "polish", "gloss"] },
+  { id: "protection", title: "Protection", blurb: "Coatings and sealants that keep the shine locked in for longer.", image: "/work/tesla-foam.webp", items: ["ceramic", "sealant", "maintenance"] },
 ];
 
 export const categories = ["All", "Exterior", "Interior", "Paint & Coating"] as const;
 export type Category = (typeof categories)[number];
 
-// Portfolio (placeholders in /public/work). "image" is the cover; "gallery" is shown in the lightbox.
-export type Project = { id: number; title: string; category: Exclude<Category, "All">; image: string; gallery: string[] };
+// Portfolio (real photos in /public/work). "image" is the cover; "gallery" is shown in the lightbox
+// (.mp4 entries play as video). "video" makes the grid tile a looping clip.
+export type Project = { id: number; title: string; category: Exclude<Category, "All">; image: string; video?: string; gallery: string[] };
 export const projects: Project[] = [
   { id: 7, title: "Mazda 3 Pet Hair Removal", category: "Interior", image: "/work/mazda-seats-after.webp", gallery: ["/work/mazda-seats-after.webp", "/work/mazda-seats-before.webp"] },
   { id: 8, title: "RAM TRX Interior Reset", category: "Interior", image: "/work/trx-console-after.webp", gallery: ["/work/trx-console-after.webp", "/work/trx-console-before.webp"] },
   { id: 9, title: "RAM TRX Clay & Seal", category: "Paint & Coating", image: "/work/trx-wheel-after.webp", gallery: ["/work/trx-wheel-after.webp", "/work/trx-wheel-before.webp"] },
-  { id: 1, title: "Gloss Black Exterior Detail", category: "Exterior", image: "/work/rinse.webp", gallery: ["/work/rinse.webp", "/work/foam.webp"] },
-  { id: 2, title: "Full Interior Deep Clean", category: "Interior", image: "/work/seats.webp", gallery: ["/work/seats.webp", "/work/steering.webp"] },
-  { id: 3, title: "Paint Correction & Polish", category: "Paint & Coating", image: "/work/gloss.webp", gallery: ["/work/gloss.webp"] },
-  { id: 4, title: "Wheels & Tires Refresh", category: "Exterior", image: "/work/wheels.webp", gallery: ["/work/wheels.webp"] },
-  { id: 5, title: "Leather & Cockpit Detail", category: "Interior", image: "/work/steering.webp", gallery: ["/work/steering.webp"] },
-  { id: 6, title: "Snow Foam Pre-Wash", category: "Exterior", image: "/work/foam.webp", gallery: ["/work/foam.webp", "/work/rinse.webp"] },
+  { id: 10, title: "VW Jetta Premium Detail", category: "Exterior", image: "/work/jetta-exterior.webp", gallery: ["/work/jetta-exterior.webp", "/work/jetta-foam.mp4"] },
+  { id: 11, title: "VW Jetta Snow Foam Wash", category: "Exterior", image: "/work/jetta-foam-poster.webp", video: "/work/jetta-foam.mp4", gallery: ["/work/jetta-foam.mp4"] },
+  { id: 12, title: "Tesla Model 3 Foam Wash", category: "Exterior", image: "/work/tesla-foam.webp", gallery: ["/work/tesla-foam.webp", "/work/tesla-interior.mp4"] },
+  { id: 13, title: "Tesla Model 3 Interior", category: "Interior", image: "/work/tesla-interior-poster.webp", video: "/work/tesla-interior.mp4", gallery: ["/work/tesla-interior.mp4"] },
+  { id: 14, title: "VW Jetta Console Detail", category: "Interior", image: "/work/jetta-console.webp", gallery: ["/work/jetta-console.webp", "/work/jetta-console.mp4"] },
+  { id: 15, title: "VW Jetta Carpet Reset", category: "Interior", image: "/work/jetta-carpet-after.webp", gallery: ["/work/jetta-carpet-after.webp", "/work/jetta-carpet-before.webp"] },
 ];
-export const signatureIds = [7, 9, 8, 1, 3, 2];
+export const signatureIds = [7, 9, 12, 10, 8, 14];
 
 // Real before & after photos from Pat's jobs (in /public/work).
 export const beforeAfter = [
   { id: "mazda", title: "Mazda 3 — Pet Hair Removal", before: "/work/mazda-seats-before.webp", after: "/work/mazda-seats-after.webp" },
   { id: "trx-console", title: "RAM TRX — Interior Reset", before: "/work/trx-console-before.webp", after: "/work/trx-console-after.webp" },
   { id: "trx-wheel", title: "RAM TRX — Clay & Seal", before: "/work/trx-wheel-before.webp", after: "/work/trx-wheel-after.webp" },
+  { id: "jetta-carpet", title: "VW Jetta — Carpet Reset", before: "/work/jetta-carpet-before.webp", after: "/work/jetta-carpet-after.webp" },
 ];
 
 export const process = [
@@ -125,5 +126,5 @@ export const testimonials = [
   { name: "Placeholder review", area: "Union City, CA", text: "Replace with a real review about paint correction or a ceramic coating." },
 ];
 
-export const aboutImage = "/images/about.webp";
-export const contactImage = "/images/contact.webp";
+export const aboutImage = "/work/mazda-seats-after.webp";
+export const contactImage = "/work/jetta-exterior.webp";
