@@ -91,7 +91,10 @@ export function ScrollVideo({ src, poster, stages, intro }: { src: string; poste
         if (idx !== last) { last = idx; setStage(idx); }
       },
     });
-    return () => { cancelAnimationFrame(raf); st.kill(); };
+    const refresh = () => ScrollTrigger.refresh();
+    if (document.readyState === "complete") requestAnimationFrame(refresh);
+    else addEventListener("load", refresh, { once: true });
+    return () => { cancelAnimationFrame(raf); removeEventListener("load", refresh); st.kill(); };
   }, [stages]);
 
   const s = stages[stage]!;
