@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChevronLeft, ChevronRight, X, Instagram } from "lucide-react";
 import { categories, projects, signatureIds, contact, type Category } from "@/data/content";
 import { GlassButton, SectionHead } from "./Glass";
@@ -93,29 +91,29 @@ export function Work() {
 }
 
 function Signature() {
-  const sec = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const items = signatureIds.map((id) => projects.find((p) => p.id === id)!);
-  useEffect(() => {
-    if (reduced() || !sec.current) return;
-    gsap.registerPlugin(ScrollTrigger);
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 1024px)", () => {
-      const t = track.current!;
-      gsap.to(t, {
-        x: () => -(t.scrollWidth - innerWidth + 64), ease: "none",
-        scrollTrigger: { trigger: sec.current, pin: true, scrub: 1, end: () => `+=${t.scrollWidth - innerWidth}`, invalidateOnRefresh: true },
-      });
-    });
-    return () => mm.revert();
-  }, []);
+  const step = (d: number) => {
+    const t = track.current;
+    const card = t?.querySelector("figure");
+    if (!t || !card) return;
+    t.scrollBy({ left: d * (card.getBoundingClientRect().width + 20), behavior: reduced() ? "auto" : "smooth" });
+  };
   return (
-    <div ref={sec} className="overflow-hidden py-24 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:py-0">
-      <h2 className="mx-auto mb-10 w-full max-w-7xl text-4xl font-bold text-foreground md:text-6xl">Signature projects.</h2>
-      <div ref={track} className="no-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 lg:overflow-visible lg:px-8">
+    <div className="relative isolate overflow-hidden py-24 md:py-32">
+      <div className="mx-auto mb-10 flex max-w-7xl items-end justify-between gap-4">
+        <h2 className="text-4xl font-bold text-foreground md:text-6xl">Signature projects.</h2>
+        <div className="hidden gap-2 md:flex">
+          <button type="button" onClick={() => step(-1)} aria-label="Previous project" className="glass grid size-12 place-items-center rounded-full text-foreground"><ChevronLeft /></button>
+          <button type="button" onClick={() => step(1)} aria-label="Next project" className="glass grid size-12 place-items-center rounded-full text-foreground"><ChevronRight /></button>
+        </div>
+      </div>
+      <div ref={track} tabIndex={0} role="region" aria-label="Signature projects"
+        onKeyDown={(e) => { if (e.key === "ArrowRight") { e.preventDefault(); step(1); } if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); } }}
+        className="no-scrollbar mx-auto flex max-w-7xl snap-x snap-mandatory gap-5 overflow-x-auto rounded-[28px] focus-visible:outline-2 focus-visible:outline-primary [-webkit-overflow-scrolling:touch]">
         {items.map((p) => (
-          <figure key={p.id} className="relative aspect-[4/5] w-[80vw] shrink-0 snap-center overflow-hidden rounded-[28px] sm:w-[46vw] lg:aspect-[4/3] lg:w-[42vw]">
-            <img src={p.image} alt={p.title} loading="lazy" onError={imgFallback} className="h-full w-full object-cover" />
+          <figure key={p.id} className="group relative aspect-[4/5] w-[78vw] shrink-0 snap-start overflow-hidden rounded-[28px] md:w-[32vw] xl:w-[28rem]">
+            <img src={p.image} alt={p.title} loading="lazy" onError={imgFallback} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
             <figcaption className="glass-dark absolute bottom-4 left-4 rounded-full px-4 py-2 text-sm font-semibold">{p.title}</figcaption>
           </figure>
         ))}
