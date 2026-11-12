@@ -72,16 +72,23 @@ export function ScrollVideo({ src, poster, stages, intro }: { src: string; poste
       return;
     }
     gsap.registerPlugin(ScrollTrigger);
-    v?.pause();
-    let target = 0, current = 0, raf = 0, last = -1;
+    // Safari: unlock frame decoding with a muted play/pause, and only seek once the
+    // previous seek has finished (Safari drops/janks on back-to-back currentTime writes).
+    if (v) { v.muted = true; v.play().then(() => v.pause()).catch(() => v.pause()); }
+    let target = 0, current = 0, raf = 0, last = -1, seeking = false;
+    const onSeeked = () => { seeking = false; };
+    v?.addEventListener("seeked", onSeeked);
     const loop = () => {
       current += (target - current) * 0.15;
-      if (v?.duration && Math.abs(v.currentTime - current) > 0.01) v.currentTime = current;
+      if (v && v.duration && !seeking && v.readyState >= 1 && Math.abs(v.currentTime - current) > 0.03) {
+        seeking = true;
+        v.currentTime = current;
+      }
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
     const st = ScrollTrigger.create({
-      trigger: sec.current, start: "top top", end: "+=500%", pin: true, scrub: true,
+      trigger: sec.current, start: "top top", end: "+=500%", pin: true, scrub: true, anticipatePin: 1,
       onUpdate: (self) => {
         const p = self.progress;
         if (v?.duration) target = p * (v.duration - 0.05);
@@ -94,7 +101,7 @@ export function ScrollVideo({ src, poster, stages, intro }: { src: string; poste
     const refresh = () => ScrollTrigger.refresh();
     if (document.readyState === "complete") requestAnimationFrame(refresh);
     else addEventListener("load", refresh, { once: true });
-    return () => { cancelAnimationFrame(raf); removeEventListener("load", refresh); st.kill(); };
+    return () => { v?.removeEventListener("seeked", onSeeked); cancelAnimationFrame(raf); removeEventListener("load", refresh); st.kill(); };
   }, [stages]);
 
   const s = stages[stage]!;
@@ -103,8 +110,8 @@ export function ScrollVideo({ src, poster, stages, intro }: { src: string; poste
       <div className="relative h-[100svh] overflow-hidden bg-ink">
         <img src={poster} alt="DetailsByPat detailing video, first frame" onError={imgFallback} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
         {videoOk && (
-          <video ref={video} src={src} poster={poster} muted playsInline preload="auto" autoPlay={!scrub} aria-hidden
-            onError={() => setVideoOk(false)} className="absolute inset-0 h-full w-full object-cover" />
+          <video ref={video} src={src} poster={poster} muted playsInline disablePictureInPicture disableRemotePlayback preload="auto" autoPlay={!scrub} aria-hidden
+            onError={() => setVideoOk(false)} className="absolute inset-0 h-full w-full object-cover [transform:translateZ(0)]" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-ink/40" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink/60 via-transparent to-transparent" />
