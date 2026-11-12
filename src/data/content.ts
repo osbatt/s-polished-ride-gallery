@@ -14,7 +14,7 @@ export const contact = {
   phone: "",
   instagram: "https://www.instagram.com/detailsbypat",
   instagramHandle: "@detailsbypat",
-  dm: "https://ig.me/m/detailsbypat",
+  dm: "https://www.instagram.com/detailsbypat/",
   threads: "https://www.threads.net/@detailsbypat",
   threadsHandle: "@detailsbypat",
   location: "Union City, CA (Mobile service)",
